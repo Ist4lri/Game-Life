@@ -89,9 +89,18 @@ public class Grid implements Iterable<Cell> {
     }
 
 
-    // TODO: Écrire une version correcte de cette méthode.
     public List<Cell> getNeighbors(int rowIndex, int columnIndex) {
-        return null;
+        List<Cell> Result;
+        Result.add(grid.getCell(rowIndex-1, columnIndex-1),
+                    grid.getCell(rowIndex-1, columnIndex),
+                    grid.getCell(rowIndex-1, columnIndex+1),
+                    grid.getCell(rowIndex, columnIndex-1),
+                    grid.getCell(rowIndex, columnIndex+1),
+                    grid.getCell(rowIndex+1, columnIndex-1),
+                    grid.getCell(rowIndex+1, columnIndex),
+                    grid.getCell(rowIndex+1, columnIndex+1));
+        
+        return Result;
     }
 
     // TODO: Écrire une version correcte de cette méthode.
