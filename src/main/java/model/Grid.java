@@ -132,8 +132,8 @@ public class Grid implements Iterable<Cell> {
 
     public CellState[][] calculateNextStates() {
         CellState[][] nextCellState = new CellState[getNumberOfRows()][getNumberOfColumns()];
-        for (int row = 0; row <= getNumberOfRows(); row++) {
-            for (int columns = 0; columns <= getNumberOfColumns(); columns++) {
+        for (int row = 0; row < getNumberOfRows(); row++) {
+            for (int columns = 0; columns < getNumberOfColumns(); columns++) {
                 nextCellState[row][columns] = calculateNextState(row, columns);
             }
         }
@@ -141,8 +141,8 @@ public class Grid implements Iterable<Cell> {
     }
 
     public void updateStates(CellState[][] nextState) {
-        for (int row = 0; row <= nextState.length; row++) {
-            for (int columns = 0; columns <= nextState[row].length; columns++) {
+        for (int row = 0; row < nextState.length; row++) {
+            for (int columns = 0; columns < nextState[row].length; columns++) {
                 getCell(row, columns).setState(nextState[row][columns]);
             }
         }
@@ -167,7 +167,10 @@ public class Grid implements Iterable<Cell> {
      * </ul>
      */
     public void updateToNextGeneration() {
+        System.out.println("Passed one");
         updateStates(this.calculateNextStates());
+        System.out.println("Passed two");
+
     }
 
     /**
@@ -188,6 +191,8 @@ public class Grid implements Iterable<Cell> {
      * @throws NullPointerException if {@code random} is {@code null}.
      */
     public void randomGeneration(Random random) {
-
+        for (Cell cell : this) {
+            cell.setState(random.nextBoolean() ? CellState.ALIVE : CellState.DEAD);
+        }
     }
 }
