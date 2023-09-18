@@ -167,9 +167,7 @@ public class Grid implements Iterable<Cell> {
      * </ul>
      */
     public void updateToNextGeneration() {
-        System.out.println("Passed one");
         updateStates(this.calculateNextStates());
-        System.out.println("Passed two");
 
     }
 
