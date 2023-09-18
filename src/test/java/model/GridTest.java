@@ -18,14 +18,14 @@ public class GridTest {
     assertThat(grid.getNeighbors(1, 1)).isNotNull();
     assertThat(grid.getNeighbors(1, 1)).hasSize(8);
     assertThat(grid.getNeighbors(1, 1))
-            .containsExactlyInAnyOrder(grid.getCell(0, 0),
-                    grid.getCell(0, 1),
-                    grid.getCell(0, 2),
-                    grid.getCell(1, 0),
-                    grid.getCell(1, 2),
-                    grid.getCell(2, 0),
-                    grid.getCell(2, 1),
-                    grid.getCell(2, 2));
+        .containsExactlyInAnyOrder(grid.getCell(0, 0),
+            grid.getCell(0, 1),
+            grid.getCell(0, 2),
+            grid.getCell(1, 0),
+            grid.getCell(1, 2),
+            grid.getCell(2, 0),
+            grid.getCell(2, 1),
+            grid.getCell(2, 2));
   }
 
   @Test

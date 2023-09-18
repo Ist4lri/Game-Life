@@ -1,9 +1,9 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-
 
 /**
  * {@link Grid} instances represent the grid in <i>The Game of Life</i>.
@@ -19,7 +19,8 @@ public class Grid implements Iterable<Cell> {
      *
      * @param numberOfRows    the number of rows
      * @param numberOfColumns the number of columns
-     * @throws IllegalArgumentException if {@code numberOfRows} or {@code numberOfColumns} are
+     * @throws IllegalArgumentException if {@code numberOfRows} or
+     *                                  {@code numberOfColumns} are
      *                                  less than or equal to 0
      */
     public Grid(int numberOfRows, int numberOfColumns) {
@@ -52,7 +53,9 @@ public class Grid implements Iterable<Cell> {
     /**
      * Returns the {@link Cell} at the given index.
      *
-     * <p>Note that the index is wrapped around so that a {@link Cell} is always returned.
+     * <p>
+     * Note that the index is wrapped around so that a {@link Cell} is always
+     * returned.
      *
      * @param rowIndex    the row index of the {@link Cell}
      * @param columnIndex the column index of the {@link Cell}
@@ -88,77 +91,102 @@ public class Grid implements Iterable<Cell> {
         return numberOfColumns;
     }
 
-
     public List<Cell> getNeighbors(int rowIndex, int columnIndex) {
-        List<Cell> Result;
-        Result.add(grid.getCell(rowIndex-1, columnIndex-1),
-                    grid.getCell(rowIndex-1, columnIndex),
-                    grid.getCell(rowIndex-1, columnIndex+1),
-                    grid.getCell(rowIndex, columnIndex-1),
-                    grid.getCell(rowIndex, columnIndex+1),
-                    grid.getCell(rowIndex+1, columnIndex-1),
-                    grid.getCell(rowIndex+1, columnIndex),
-                    grid.getCell(rowIndex+1, columnIndex+1));
-        
+        List<Cell> Result = new ArrayList<Cell>();
+        Result.add(this.getCell(rowIndex - 1, columnIndex - 1));
+        Result.add(this.getCell(rowIndex - 1, columnIndex));
+        Result.add(this.getCell(rowIndex - 1, columnIndex + 1));
+        Result.add(this.getCell(rowIndex, columnIndex + 1));
+        Result.add(this.getCell(rowIndex, columnIndex - 1));
+        Result.add(this.getCell(rowIndex + 1, columnIndex - 1));
+        Result.add(this.getCell(rowIndex + 1, columnIndex));
+        Result.add(this.getCell(rowIndex + 1, columnIndex + 1));
         return Result;
     }
 
-    // TODO: Écrire une version correcte de cette méthode.
     public int countAliveNeighbors(int rowIndex, int columnIndex) {
-        return 0;
+        List<Cell> listOfNeighbors = this.getNeighbors(rowIndex, columnIndex);
+        int numberOfAliveNeighbors = 0;
+        for (int i = 0; i < listOfNeighbors.size(); i++) {
+            if (listOfNeighbors.get(i).isAlive()) {
+                numberOfAliveNeighbors++;
+            }
+        }
+        return numberOfAliveNeighbors;
     }
 
-    // TODO: Écrire une version correcte de cette méthode.
     public CellState calculateNextState(int rowIndex, int columnIndex) {
-        return null;
+        if (this.getCell(rowIndex, columnIndex).isAlive()) {
+            if (countAliveNeighbors(rowIndex, columnIndex) >= 2) {
+                return CellState.ALIVE;
+            } else {
+                return CellState.DEAD;
+            }
+        } else {
+            if (countAliveNeighbors(rowIndex, columnIndex) >= 3) {
+                return CellState.ALIVE;
+            }
+            return CellState.DEAD;
+        }
     }
 
-
-
-    // TODO: Écrire une version correcte de cette méthode.
     public CellState[][] calculateNextStates() {
         CellState[][] nextCellState = new CellState[getNumberOfRows()][getNumberOfColumns()];
+        for (int row = 0; row <= getNumberOfRows(); row++) {
+            for (int columns = 0; columns <= getNumberOfColumns(); columns++) {
+                nextCellState[row][columns] = calculateNextState(row, columns);
+            }
+        }
         return nextCellState;
     }
 
-    // TODO: Écrire une version correcte de cette méthode.
     public void updateStates(CellState[][] nextState) {
-
+        for (int row = 0; row <= nextState.length; row++) {
+            for (int columns = 0; columns <= nextState[row].length; columns++) {
+                getCell(row, columns).setState(nextState[row][columns]);
+            }
+        }
     }
 
     /**
      * Transitions all {@link Cell}s in this {@code Grid} to the next generation.
      *
-     * <p>The following rules are applied:
+     * <p>
+     * The following rules are applied:
      * <ul>
-     * <li>Any live {@link Cell} with fewer than two live neighbours dies, i.e. underpopulation.</li>
-     * <li>Any live {@link Cell} with two or three live neighbours lives on to the next
+     * <li>Any live {@link Cell} with fewer than two live neighbours dies, i.e.
+     * underpopulation.</li>
+     * <li>Any live {@link Cell} with two or three live neighbours lives on to the
+     * next
      * generation.</li>
-     * <li>Any live {@link Cell} with more than three live neighbours dies, i.e. overpopulation.</li>
-     * <li>Any dead {@link Cell} with exactly three live neighbours becomes a live cell, i.e.
+     * <li>Any live {@link Cell} with more than three live neighbours dies, i.e.
+     * overpopulation.</li>
+     * <li>Any dead {@link Cell} with exactly three live neighbours becomes a live
+     * cell, i.e.
      * reproduction.</li>
      * </ul>
      */
-    // TODO: Écrire une version correcte de cette méthode.
     public void updateToNextGeneration() {
-
+        updateStates(this.calculateNextStates());
     }
 
     /**
      * Sets all {@link Cell}s in this {@code Grid} as dead.
      */
-    // TODO: Écrire une version correcte de cette méthode.
     public void clear() {
-
+        for (Cell cell : this) {
+            cell.setState(CellState.DEAD);
+        }
     }
 
     /**
-     * Goes through each {@link Cell} in this {@code Grid} and randomly sets its state as ALIVE or DEAD.
+     * Goes through each {@link Cell} in this {@code Grid} and randomly sets its
+     * state as ALIVE or DEAD.
      *
-     * @param random {@link Random} instance used to decide if each {@link Cell} is ALIVE or DEAD.
+     * @param random {@link Random} instance used to decide if each {@link Cell} is
+     *               ALIVE or DEAD.
      * @throws NullPointerException if {@code random} is {@code null}.
      */
-    // TODO: Écrire une version correcte de cette méthode.
     public void randomGeneration(Random random) {
 
     }
