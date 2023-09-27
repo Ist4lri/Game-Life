@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import javafx.scene.paint.Color;
 
 /**
  * {@link Grid} instances represent the grid in <i>The Game of Life</i>.
@@ -115,17 +116,34 @@ public class Grid implements Iterable<Cell> {
         return numberOfAliveNeighbors;
     }
 
+    public int countBlueNeighbors(int rowIndex, int columnIndex) {
+        List<Cell> listOfNeighbors = this.getNeighbors(rowIndex, columnIndex);
+        int numberOfBlueNeighbors = 0;
+        for (int i = 0; i < listOfNeighbors.size(); i++) {
+            if (listOfNeighbors.get(i).getState().getCellColor() == Color.BLUE) {
+                numberOfBlueNeighbors++;
+            }
+        }
+        return numberOfBlueNeighbors;
+    }
+
     public CellState calculateNextState(int rowIndex, int columnIndex) {
         int howManyAlive = countAliveNeighbors(rowIndex, columnIndex);
-        if (this.getCell(rowIndex, columnIndex).isAlive()) {
+        Cell cellAnalyzed = this.getCell(rowIndex, columnIndex);
+        if (cellAnalyzed.isAlive()) {
             if (howManyAlive == 2 || howManyAlive == 3) {
-                return CellState.RED_ALIVE;
+                return cellAnalyzed.getState();
             } else {
                 return CellState.DEAD;
             }
         } else {
             if (howManyAlive == 3) {
-                return CellState.RED_ALIVE;
+                int numberOfBlue = countBlueNeighbors(rowIndex, columnIndex);
+                if (numberOfBlue >= 2) {
+                    return CellState.BLUE_ALIVE;
+                } else {
+                    return CellState.RED_ALIVE;
+                }
             }
             return CellState.DEAD;
         }

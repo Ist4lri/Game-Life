@@ -19,4 +19,8 @@ public enum CellState {
         this.color = color;
     }
 
+    Color getCellColor() {
+        return this.color;
+    }
+
 }
