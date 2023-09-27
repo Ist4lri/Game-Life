@@ -116,15 +116,16 @@ public class Grid implements Iterable<Cell> {
     }
 
     public CellState calculateNextState(int rowIndex, int columnIndex) {
+        int howManyAlive = countAliveNeighbors(rowIndex, columnIndex);
         if (this.getCell(rowIndex, columnIndex).isAlive()) {
-            if (countAliveNeighbors(rowIndex, columnIndex) >= 2) {
-                return CellState.ALIVE;
+            if (howManyAlive == 2 || howManyAlive == 3) {
+                return CellState.RED_ALIVE;
             } else {
                 return CellState.DEAD;
             }
         } else {
-            if (countAliveNeighbors(rowIndex, columnIndex) >= 3) {
-                return CellState.ALIVE;
+            if (howManyAlive == 3) {
+                return CellState.RED_ALIVE;
             }
             return CellState.DEAD;
         }
@@ -190,7 +191,8 @@ public class Grid implements Iterable<Cell> {
      */
     public void randomGeneration(Random random) {
         for (Cell cell : this) {
-            cell.setState(random.nextBoolean() ? CellState.ALIVE : CellState.DEAD);
+            cell.setState(random.nextBoolean() ? (random.nextBoolean() ? CellState.RED_ALIVE : CellState.BLUE_ALIVE)
+                    : CellState.DEAD);
         }
     }
 }
