@@ -15,5 +15,5 @@ Le but de ce TP est de compléter le code fourni par le dépôt afin d'obtenir u
 
 ## Membre du projet
 
-- NOM, prénom, du participant
+- GOUTTEBEL Pierre-Loïc
 
